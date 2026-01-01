@@ -1,5 +1,8 @@
 const service = require("./inventory.service");
 
+/**
+ * Create inventory item
+ */
 const create = async (req, res, next) => {
   try {
     const id = await service.addItem(req.body);
@@ -9,6 +12,9 @@ const create = async (req, res, next) => {
   }
 };
 
+/**
+ * Get all inventory items
+ */
 const getAll = async (req, res, next) => {
   try {
     const items = await service.listInventory();
@@ -22,6 +28,29 @@ const getAll = async (req, res, next) => {
   }
 };
 
+/**
+ * Get inventory item by ID
+ */
+const getById = async (req, res, next) => {
+  try {
+    const item = await service.getItemById(req.params.id);
+
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: "Item not found"
+      });
+    }
+
+    res.json({ success: true, data: item });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * Increase stock
+ */
 const increase = async (req, res, next) => {
   try {
     await service.increaseStock(req.params.id, req.body.quantity);
@@ -31,6 +60,9 @@ const increase = async (req, res, next) => {
   }
 };
 
+/**
+ * Decrease stock
+ */
 const decrease = async (req, res, next) => {
   try {
     await service.decreaseStock(req.params.id, req.body.quantity);
@@ -40,4 +72,40 @@ const decrease = async (req, res, next) => {
   }
 };
 
-module.exports = { create, getAll, increase, decrease };
+/**
+ * Delete inventory item
+ */
+const remove = async (req, res, next) => {
+  try {
+    await service.deleteItem(req.params.id);
+    res.json({ success: true, message: "Item deleted" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * Get low stock items
+ */
+const lowStock = async (req, res, next) => {
+  try {
+    const items = await service.getLowStockItems();
+    res.json({
+      success: true,
+      count: items.length,
+      data: items
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  create,
+  getAll,
+  getById,
+  increase,
+  decrease,
+  remove,
+  lowStock
+};

@@ -1,0 +1,138 @@
+openapi: 3.0.3
+
+info:
+  title: Inventory Management API
+  description: Inventory microservice built with Node.js, Express, and PostgreSQL
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:5000
+
+tags:
+  - name: Inventory
+    description: Inventory operations
+
+paths:
+  /api/inventory:
+    post:
+      tags: [Inventory]
+      summary: Create inventory item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InventoryCreate"
+      responses:
+        "201":
+          description: Item created
+
+    get:
+      tags: [Inventory]
+      summary: Get all inventory items
+      responses:
+        "200":
+          description: List of items
+
+  /api/inventory/{id}:
+    get:
+      tags: [Inventory]
+      summary: Get item by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Item details
+
+    delete:
+      tags: [Inventory]
+      summary: Delete inventory item
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Item deleted
+
+  /api/inventory/{id}/increase:
+    patch:
+      tags: [Inventory]
+      summary: Increase stock quantity
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+      responses:
+        "200":
+          description: Stock increased
+
+  /api/inventory/{id}/decrease:
+    patch:
+      tags: [Inventory]
+      summary: Decrease stock quantity
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+      responses:
+        "200":
+          description: Stock decreased
+
+  /api/inventory/low-stock:
+    get:
+      tags: [Inventory]
+      summary: Get low stock items
+      responses:
+        "200":
+          description: Low stock items list
+
+components:
+  schemas:
+    InventoryCreate:
+      type: object
+      required:
+        - product_name
+        - sku
+        - quantity
+      properties:
+        product_name:
+          type: string
+          example: Apple iPhone 15
+        sku:
+          type: string
+          example: IP15-128-BLK
+        quantity:
+          type: integer
+          example: 50
+        price:
+          type: number
+          example: 79999

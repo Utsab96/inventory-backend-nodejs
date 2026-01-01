@@ -4,13 +4,21 @@ const dotenv = require("dotenv");
 
 const inventoryRoutes = require("./modules/inventory/inventory.routes");
 const { errorHandler } = require("./middlewares/error.middleware");
+const swagger = require("../src/docs/swagger");
+
+
 
 dotenv.config();
 
 const app = express();
 
+swagger(app);
+
 app.use(cors());
 app.use(express.json()); // ❗ REQUIRED for POST body
+
+// error middleware
+app.use(errorHandler);
 
 // test route
 app.get("/test", (req, res) => {
