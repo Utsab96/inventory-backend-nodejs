@@ -1,0 +1,31 @@
+{
+  "name": "inventory-backend-nodejs",
+  "version": "1.0.0",
+  "description": "Inventory management microservice built with Node.js and Express",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "microservice",
+    "inventory",
+    "backend",
+    "api"
+  ],
+  "author": "Utsab Ghosh",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.11"
+  }
+}
